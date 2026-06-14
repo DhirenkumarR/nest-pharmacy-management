@@ -21,8 +21,8 @@ export class Admin {
   password_hash: string;
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at: Date; // Created and managed automatically by TypeORM
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updated_at: Date; // Created and managed automatically by TypeORM
 }

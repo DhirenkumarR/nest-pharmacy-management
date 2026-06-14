@@ -16,15 +16,18 @@ export class Supplier {
   @Column()
   name: string;
 
-  @Column({ nullable: true })
-  contact_no: string;
+  // These fields are optional/nullable in the DB, so their TS type includes '| null'.
+  // We specify type: 'varchar' explicitly because reflect-metadata infers union types (like string | null) as 'Object' which TypeORM doesn't support for basic columns.
+  @Column({ type: 'varchar', nullable: true })
+  contact_no: string | null;
 
-  @Column({ nullable: true })
-  email: string;
+  @Column({ type: 'varchar', nullable: true })
+  email: string | null;
 
-  @Column({ nullable: true })
-  address: string;
+  @Column({ type: 'varchar', nullable: true })
+  address: string | null;
 
+  // Supplier can have many medicines associated with it
   @OneToMany(() => Medicine, (medicine) => medicine.supplier)
   medicines: Medicine[];
 

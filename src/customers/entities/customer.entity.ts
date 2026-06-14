@@ -16,15 +16,18 @@ export class Customer {
   @Column()
   name: string;
 
-  @Column({ nullable: true })
-  contact_no: string;
+  // Optional fields inside the DB, typed as 'string | null' in TS
+  // Specify type: 'varchar' explicitly to avoid union type metadata inference issues
+  @Column({ type: 'varchar', nullable: true })
+  contact_no: string | null;
 
-  @Column({ nullable: true })
-  email: string;
+  @Column({ type: 'varchar', nullable: true })
+  email: string | null;
 
-  @Column({ nullable: true })
-  address: string;
+  @Column({ type: 'varchar', nullable: true })
+  address: string | null;
 
+  // Customer has a OneToMany relationship to Sales
   @OneToMany(() => Sale, (sale) => sale.customer)
   sales: Sale[];
 

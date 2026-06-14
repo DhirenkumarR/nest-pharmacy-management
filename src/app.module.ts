@@ -22,7 +22,7 @@ import { SalesModule } from './sales/sales.module';
         database: config.get<string>('DB_NAME'),
         autoLoadEntities: true,
         synchronize: true,
-      })
+      }),
     }),
 
     AdminsModule,
@@ -33,7 +33,7 @@ import { SalesModule } from './sales/sales.module';
 
     CustomersModule,
 
-    SalesModule
-  ]
+    SalesModule,
+  ],
 })
 export class AppModule {}

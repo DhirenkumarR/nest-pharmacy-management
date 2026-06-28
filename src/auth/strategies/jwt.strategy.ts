@@ -3,6 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ExtractJwt, Strategy } from 'passport-jwt';
+import { ConfigService } from '@nestjs/config';
 import { Admin } from '../../admins/entities/admin.entity';
 
 @Injectable()
@@ -10,11 +11,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     @InjectRepository(Admin)
     private readonly adminRepository: Repository<Admin>,
+    private readonly configService: ConfigService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: 'super_secret_pharmacy_key',
+      secretOrKey: configService.get<string>('JWT_SECRET') || 'super_secret_pharmacy_key',
     });
   }
 

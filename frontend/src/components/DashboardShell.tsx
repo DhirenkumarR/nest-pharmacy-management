@@ -9,6 +9,8 @@ import {
   User,
   Activity
 } from 'lucide-react';
+import { Suppliers } from './Suppliers';
+
 
 export const DashboardShell = () => {
   const { user, logout } = useAuth();
@@ -139,24 +141,28 @@ export const DashboardShell = () => {
           </div>
         </header>
 
-        {/* Dynamic View Placeholders */}
-        <div className="glass-card" style={{ minHeight: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '16px' }}>
-          <div style={{
-            padding: '24px',
-            borderRadius: '50%',
-            backgroundColor: 'var(--primary-light)',
-            color: 'var(--primary)'
-          }}>
-            {activeTab === 'dashboard' && <LayoutDashboard size={48} />}
-            {activeTab === 'suppliers' && <Users size={48} />}
-            {activeTab === 'medicines' && <Package size={48} />}
-            {activeTab === 'sales' && <ShoppingCart size={48} />}
+        {/* Render actual component or dynamic view placeholders */}
+        {activeTab === 'suppliers' ? (
+          <Suppliers />
+        ) : (
+          <div className="glass-card" style={{ minHeight: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '16px' }}>
+            <div style={{
+              padding: '24px',
+              borderRadius: '50%',
+              backgroundColor: 'var(--primary-light)',
+              color: 'var(--primary)'
+            }}>
+              {activeTab === 'dashboard' && <LayoutDashboard size={48} />}
+              {activeTab === 'medicines' && <Package size={48} />}
+              {activeTab === 'sales' && <ShoppingCart size={48} />}
+            </div>
+            <h2>{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Module</h2>
+            <p style={{ color: 'var(--text-secondary)', maxWidth: '400px', textAlign: 'center' }}>
+              The {activeTab} view will populate here. Currently, you are successfully authenticated as <strong>{user?.email}</strong>.
+            </p>
           </div>
-          <h2>{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Module</h2>
-          <p style={{ color: 'var(--text-secondary)', maxWidth: '400px', textAlign: 'center' }}>
-            The {activeTab} view will populate here. Currently, you are successfully authenticated as <strong>{user?.email}</strong>.
-          </p>
-        </div>
+        )}
+
       </main>
     </div>
   );

@@ -440,3 +440,13 @@ tr:hover td {
   }
 }
 
+/* Custom Dropdown item hover class */
+.dropdown-item-hover {
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.dropdown-item-hover:hover {
+  background-color: var(--primary-light) !important;
+  color: var(--primary) !important;
+}
+

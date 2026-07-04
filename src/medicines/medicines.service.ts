@@ -6,6 +6,7 @@ import { Supplier } from '../suppliers/entities/supplier.entity';
 import { CreateMedicineDto } from './dto/create-medicine.dto';
 import { UpdateMedicineDto } from './dto/update-medicine.dto';
 import { GetMedicinesQueryDto } from './dto/get-medicines-query.dto';
+import { GetMedicinesDropdownQueryDto } from './dto/get-medicines-dropdown-query.dto';
 
 @Injectable()
 export class MedicinesService {
@@ -68,6 +69,46 @@ export class MedicinesService {
     }
 
     queryBuilder.orderBy('medicine.created_at', 'DESC');
+    queryBuilder.skip((page - 1) * limit);
+    queryBuilder.take(limit);
+
+    const [data, total] = await queryBuilder.getManyAndCount();
+    const last_page = Math.ceil(total / limit);
+
+    return {
+      data,
+      meta: {
+        total,
+        page,
+        last_page,
+        limit,
+      },
+    };
+  }
+
+  async getDropdownList(query: GetMedicinesDropdownQueryDto) {
+    const { page = 1, limit = 20, search } = query;
+
+    const queryBuilder = this.medicineRepository
+      .createQueryBuilder('medicine')
+      .select([
+        'medicine.medicine_id',
+        'medicine.name',
+        'medicine.generic_name',
+        'medicine.selling_price',
+        'medicine.quantity',
+        'medicine.batch_no',
+        'medicine.expiry_date',
+      ]);
+
+    if (search) {
+      queryBuilder.andWhere(
+        '(medicine.name ILike :search OR medicine.generic_name ILike :search)',
+        { search: `%${search}%` },
+      );
+    }
+
+    queryBuilder.orderBy('medicine.name', 'ASC');
     queryBuilder.skip((page - 1) * limit);
     queryBuilder.take(limit);
 

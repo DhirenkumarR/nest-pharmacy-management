@@ -22,6 +22,7 @@ import { MedicinesService } from './medicines.service';
 import { CreateMedicineDto } from './dto/create-medicine.dto';
 import { UpdateMedicineDto } from './dto/update-medicine.dto';
 import { GetMedicinesQueryDto } from './dto/get-medicines-query.dto';
+import { GetMedicinesDropdownQueryDto } from './dto/get-medicines-dropdown-query.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Medicines')
@@ -56,6 +57,20 @@ export class MedicinesController {
   @ApiResponse({ status: 401, description: 'Unauthorized.' })
   findAll(@Query() query: GetMedicinesQueryDto) {
     return this.medicinesService.findAll(query);
+  }
+
+  @Get('dropdown')
+  @ApiOperation({
+    summary:
+      'Retrieve paginated and searchable medicines list for dropdown selection',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Dropdown medicines list returned successfully.',
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized.' })
+  getDropdownList(@Query() query: GetMedicinesDropdownQueryDto) {
+    return this.medicinesService.getDropdownList(query);
   }
 
   @Get(':id')

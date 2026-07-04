@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { Suppliers } from './Suppliers';
 import { Medicines } from './Medicines';
+import { Sales } from './Sales';
 
 
 export const DashboardShell = () => {
@@ -201,6 +202,8 @@ export const DashboardShell = () => {
             <Suppliers />
           ) : activeTab === 'medicines' ? (
             <Medicines />
+          ) : activeTab === 'sales' ? (
+            <Sales />
           ) : (
             <div className="glass-card" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '16px' }}>
               <div style={{
@@ -210,7 +213,6 @@ export const DashboardShell = () => {
                 color: 'var(--primary)'
               }}>
                 {activeTab === 'dashboard' && <LayoutDashboard size={48} />}
-                {activeTab === 'sales' && <ShoppingCart size={48} />}
               </div>
               <h2>{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Module</h2>
               <p style={{ color: 'var(--text-secondary)', maxWidth: '400px', textAlign: 'center' }}>

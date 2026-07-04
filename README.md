@@ -1,98 +1,116 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# RxPharmacy Management System
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+RxPharmacy is a modern, responsive Web Application designed for managing pharmacy inventories, supplier/customer databases, and POS (Point-of-Sale) sales checkouts. 
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## 🌟 Key Features
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### 1. Dashboard & Analytical Trends
+- **Live Stats Summary**: Track overall revenue, transaction counts, supplier directory listings, and total customer counts.
+- **Inventory Alerts**: Automatic warning notifications for out-of-stock items and products nearing low-stock levels (quantity < 10).
+- **Responsive Charts**: Custom SVG-based sales trend column chart. Switch between **Daily** (past 30 days), **Weekly** (past 12 weeks), or **Monthly** (past 12 months) views with interactive tooltips.
 
-## Project setup
+### 2. POS Sales Register
+- **Atomic Checkout Transactions**: Inventory levels are decremented dynamically during checkouts inside a TypeORM database transaction. If any medicine is out of stock or missing, the transaction automatically rolls back.
+- **Inline Customer Creation**: If a customer is new, clerks can register them inline directly inside the checkout register panel. The system will save the customer profile first, retrieve the ID, and log the sale in a single click.
+- **Infinite Scroll Selectors**: Dropdown selections for choosing existing customers and medicines load items in batches of 20, appending more options as you scroll to the bottom.
 
-```bash
-$ npm install
+### 3. Medicines Inventory Catalog
+- Paginated search matching medicine name, generic drug description, or manufacturer.
+- Advanced filtering by **Drug Type** (Tablet, Capsule, Syrup, Drop, etc.) and **Suppliers**.
+- Low-stock visual highlights and expiration indicator badges.
+
+### 4. Suppliers & Customers Directories
+- CRUD directories mapping emails, phone lines, and physical addresses.
+- Search-on-scroll helper lists for checkout selectors.
+
+### 5. Multi-Device Responsive UI
+- **Fixed Sidebar**: Locks in place with the administrator profile card and logout triggers always visible in the bottom viewport corners.
+- **Table-Only Scrollbars**: Fixed page headers and pagination footers, ensuring only the table content scrolls vertically.
+- **Mobile Drawer**: Collapses into a slide-out overlay backdrop drawer on screens $\le 768\text{px}$, toggled by a top hamburger header. Modals automatically resize and enable internal scrolling on short screens.
+
+---
+
+## 🛠️ Technology Stack
+
+- **Backend API**: [NestJS](https://nestjs.com/) (Node.js), [TypeORM](https://typeorm.io/), [PostgreSQL](https://www.postgresql.org/) database.
+- **Frontend App**: [React.js](https://react.dev/), [TypeScript](https://www.typescriptlang.org/), [Vite](https://vite.dev/), [CSS variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties) (no Tailwind required).
+- **Security & Docs**: JWT Bearer Tokens, password hash validation, and [Swagger UI](https://swagger.io/) docs.
+
+---
+
+## ⚙️ Quick Project Setup
+
+### Prerequisites
+- **Node.js** (v18 or higher recommended)
+- **npm** (v9 or higher)
+- **PostgreSQL** instance running locally or hosted.
+
+### 1. Database Configuration
+Create a `.env` file in the **root project folder** (next to `package.json`):
+
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=your_postgres_username
+DB_PASSWORD=your_postgres_password
+DB_NAME=pharmacy_management_db
+JWT_SECRET=your_jwt_signing_key_secret
 ```
 
-## Compile and run the project
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+Create the database in PostgreSQL:
+```sql
+CREATE DATABASE pharmacy_management_db;
 ```
 
-## Run tests
+---
+
+### 2. Starting the Backend API Server
+
+Navigate to the project root directory and install dependencies:
+```bash
+# Install backend packages
+npm install
+
+# Start the NestJS API server in dev watch mode
+npm run start:dev
+```
+- The backend API server will run at: `http://localhost:3000`
+- Interactive API Swagger documentation will be available at: `http://localhost:3000/api`
+
+---
+
+### 3. Starting the Frontend UI Web App
+
+Navigate to the `frontend/` directory, configure environment hosts, and install dependencies:
 
 ```bash
-# unit tests
-$ npm run test
+# Move to frontend directory
+cd frontend
 
-# e2e tests
-$ npm run test:e2e
+# Install frontend packages
+npm install
 
-# test coverage
-$ npm run test:cov
+# Start the Vite local development server
+npm run dev
 ```
+- The frontend app will start on: `http://localhost:5173`
+- Default login credentials for development (if seeded):
+  - **Email**: `admin@pharmacy.com`
+  - **Password**: `admin123`
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## 🚀 Build for Production
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+To build the client assets and compile backend distributions:
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# Compile NestJS server files (from root directory)
+npm run build
+
+# Compile React client files (from frontend directory)
+cd frontend
+npm run build
 ```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).

@@ -14,6 +14,7 @@ import {
 import { Suppliers } from './Suppliers';
 import { Medicines } from './Medicines';
 import { Sales } from './Sales';
+import { Dashboard } from './Dashboard';
 
 
 export const DashboardShell = () => {
@@ -198,28 +199,15 @@ export const DashboardShell = () => {
 
         {/* Render actual component or dynamic view placeholders */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-          {activeTab === 'suppliers' ? (
+          {activeTab === 'dashboard' ? (
+            <Dashboard />
+          ) : activeTab === 'suppliers' ? (
             <Suppliers />
           ) : activeTab === 'medicines' ? (
             <Medicines />
           ) : activeTab === 'sales' ? (
             <Sales />
-          ) : (
-            <div className="glass-card" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '16px' }}>
-              <div style={{
-                padding: '24px',
-                borderRadius: '50%',
-                backgroundColor: 'var(--primary-light)',
-                color: 'var(--primary)'
-              }}>
-                {activeTab === 'dashboard' && <LayoutDashboard size={48} />}
-              </div>
-              <h2>{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Module</h2>
-              <p style={{ color: 'var(--text-secondary)', maxWidth: '400px', textAlign: 'center' }}>
-                The {activeTab} view will populate here. Currently, you are successfully authenticated as <strong>{user?.email}</strong>.
-              </p>
-            </div>
-          )}
+          ) : null}
         </div>
 
       </main>

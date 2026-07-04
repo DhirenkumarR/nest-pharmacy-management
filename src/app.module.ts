@@ -7,6 +7,7 @@ import { MedicinesModule } from './medicines/medicines.module';
 import { CustomersModule } from './customers/customers.module';
 import { SalesModule } from './sales/sales.module';
 import { AuthModule } from './auth/auth.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -37,6 +38,8 @@ import { AuthModule } from './auth/auth.module';
     SalesModule,
 
     AuthModule,
+
+    DashboardModule,
   ],
 })
 export class AppModule {}

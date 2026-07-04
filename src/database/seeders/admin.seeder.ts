@@ -20,9 +20,11 @@ export class AdminSeeder implements OnApplicationBootstrap {
 
   async seed() {
     const email = 'admin@pharmacy.com';
-    
+
     // 1. Check if default admin email already exists
-    const existingAdmin = await this.adminRepository.findOne({ where: { email } });
+    const existingAdmin = await this.adminRepository.findOne({
+      where: { email },
+    });
 
     if (existingAdmin) {
       this.logger.log('Default admin already exists. Skipping seeding.');

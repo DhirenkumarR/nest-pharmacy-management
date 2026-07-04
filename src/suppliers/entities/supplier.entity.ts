@@ -28,7 +28,6 @@ export class Supplier {
   @Column({ type: 'varchar', nullable: true })
   email: string | null;
 
-
   @Column({ type: 'varchar', nullable: true })
   address: string | null;
 

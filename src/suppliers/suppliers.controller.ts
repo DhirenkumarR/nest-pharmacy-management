@@ -12,7 +12,12 @@ import {
   HttpStatus,
   Query,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { SuppliersService } from './suppliers.service';
 import { CreateSupplierDto } from './dto/create-supplier.dto';
 import { UpdateSupplierDto } from './dto/update-supplier.dto';
@@ -24,12 +29,15 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 @Controller('suppliers')
 @UseGuards(JwtAuthGuard)
 export class SuppliersController {
-  constructor(private readonly suppliersService: SuppliersService) { }
+  constructor(private readonly suppliersService: SuppliersService) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Create a new supplier' })
-  @ApiResponse({ status: 201, description: 'The supplier has been successfully created.' })
+  @ApiResponse({
+    status: 201,
+    description: 'The supplier has been successfully created.',
+  })
   @ApiResponse({ status: 400, description: 'Invalid input payload.' })
   @ApiResponse({ status: 401, description: 'Unauthorized.' })
   create(@Body() createSupplierDto: CreateSupplierDto) {
@@ -37,16 +45,38 @@ export class SuppliersController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Retrieve suppliers list with pagination and search' })
-  @ApiResponse({ status: 200, description: 'Paginated suppliers list returned successfully.' })
+  @ApiOperation({
+    summary: 'Retrieve suppliers list with pagination and search',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Paginated suppliers list returned successfully.',
+  })
   @ApiResponse({ status: 401, description: 'Unauthorized.' })
   findAll(@Query() query: GetSuppliersQueryDto) {
     return this.suppliersService.findAll(query);
   }
 
+  @Get('dropdown')
+  @ApiOperation({
+    summary:
+      'Retrieve list of all suppliers with only ID and name for dropdowns',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Suppliers list for dropdown returned successfully.',
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized.' })
+  getDropdownList() {
+    return this.suppliersService.getDropdownList();
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Retrieve a single supplier by ID' })
-  @ApiResponse({ status: 200, description: 'Supplier details returned successfully.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Supplier details returned successfully.',
+  })
   @ApiResponse({ status: 401, description: 'Unauthorized.' })
   @ApiResponse({ status: 404, description: 'Supplier not found.' })
   findOne(@Param('id', ParseIntPipe) id: number) {
@@ -76,4 +106,3 @@ export class SuppliersController {
     return this.suppliersService.remove(id);
   }
 }
-

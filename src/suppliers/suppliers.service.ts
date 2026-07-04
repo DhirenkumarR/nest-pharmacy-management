@@ -11,7 +11,7 @@ export class SuppliersService {
   constructor(
     @InjectRepository(Supplier)
     private readonly supplierRepository: Repository<Supplier>,
-  ) { }
+  ) {}
 
   async create(createSupplierDto: CreateSupplierDto): Promise<Supplier> {
     const supplier = this.supplierRepository.create(createSupplierDto);
@@ -23,10 +23,10 @@ export class SuppliersService {
 
     const where = search
       ? [
-        { name: ILike(`%${search}%`) },
-        { email: ILike(`%${search}%`) },
-        { contact_no: ILike(`%${search}%`) },
-      ]
+          { name: ILike(`%${search}%`) },
+          { email: ILike(`%${search}%`) },
+          { contact_no: ILike(`%${search}%`) },
+        ]
       : {};
 
     const [data, total] = await this.supplierRepository.findAndCount({
@@ -51,6 +51,17 @@ export class SuppliersService {
     };
   }
 
+  async getDropdownList() {
+    return this.supplierRepository.find({
+      select: {
+        supplier_id: true,
+        name: true,
+      },
+      order: {
+        name: 'ASC',
+      },
+    });
+  }
 
   async findOne(id: number): Promise<Supplier> {
     const supplier = await this.supplierRepository.findOne({
@@ -62,18 +73,24 @@ export class SuppliersService {
     return supplier;
   }
 
-  async update(id: number, updateSupplierDto: UpdateSupplierDto): Promise<Supplier> {
+  async update(
+    id: number,
+    updateSupplierDto: UpdateSupplierDto,
+  ): Promise<Supplier> {
     const supplier = await this.findOne(id);
 
-    // Cast to any to allow dynamic string indexing in TypeScript
-    const updateData = updateSupplierDto as any;
-    const supplierData = supplier as any;
-
-    Object.keys(updateData).forEach((key) => {
-      if (updateData[key] !== undefined) {
-        supplierData[key] = updateData[key];
-      }
-    });
+    if (updateSupplierDto.name !== undefined) {
+      supplier.name = updateSupplierDto.name;
+    }
+    if (updateSupplierDto.contact_no !== undefined) {
+      supplier.contact_no = updateSupplierDto.contact_no;
+    }
+    if (updateSupplierDto.email !== undefined) {
+      supplier.email = updateSupplierDto.email;
+    }
+    if (updateSupplierDto.address !== undefined) {
+      supplier.address = updateSupplierDto.address;
+    }
 
     return this.supplierRepository.save(supplier);
   }
@@ -83,4 +100,3 @@ export class SuppliersService {
     await this.supplierRepository.remove(supplier);
   }
 }
-

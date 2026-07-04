@@ -10,6 +10,7 @@ import {
   Activity
 } from 'lucide-react';
 import { Suppliers } from './Suppliers';
+import { Medicines } from './Medicines';
 
 
 export const DashboardShell = () => {
@@ -144,6 +145,8 @@ export const DashboardShell = () => {
         {/* Render actual component or dynamic view placeholders */}
         {activeTab === 'suppliers' ? (
           <Suppliers />
+        ) : activeTab === 'medicines' ? (
+          <Medicines />
         ) : (
           <div className="glass-card" style={{ minHeight: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '16px' }}>
             <div style={{
@@ -153,7 +156,6 @@ export const DashboardShell = () => {
               color: 'var(--primary)'
             }}>
               {activeTab === 'dashboard' && <LayoutDashboard size={48} />}
-              {activeTab === 'medicines' && <Package size={48} />}
               {activeTab === 'sales' && <ShoppingCart size={48} />}
             </div>
             <h2>{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Module</h2>

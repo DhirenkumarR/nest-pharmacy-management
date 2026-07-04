@@ -96,7 +96,8 @@ body {
 /* Reusable Styling Utilities */
 .dashboard-container {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .sidebar {
@@ -106,12 +107,17 @@ body {
   padding: 24px;
   display: flex;
   flex-direction: column;
+  height: 100%;
+  flex-shrink: 0;
 }
 
 .main-content {
   flex: 1;
   padding: 40px;
-  overflow-y: auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .glass-card {
@@ -354,5 +360,83 @@ tr:hover td {
 @keyframes scaleIn {
   from { transform: scale(0.95); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
+}
+
+/* Responsive Top Bar (Hidden on Desktop) */
+.mobile-header {
+  display: none;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .mobile-header {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background-color: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    height: 56px;
+    flex-shrink: 0;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 260px;
+    height: 100vh;
+    z-index: 1200;
+    transform: translateX(-100%);
+    transition: transform var(--transition-normal);
+    box-shadow: var(--modal-shadow);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+    z-index: 1100;
+    animation: fadeIn var(--transition-fast) ease-out;
+  }
+
+  .mobile-close-btn {
+    display: block !important;
+  }
+
+  .main-content {
+    padding: 20px !important;
+    height: calc(100vh - 56px);
+  }
+
+  /* Modals responsiveness */
+  .modal-content {
+    width: 92% !important;
+    max-width: 92% !important;
+    padding: 24px !important;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  /* Form layouts grid adjustment on mobile */
+  form div[style*="gridTemplateColumns"] {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
 }
 

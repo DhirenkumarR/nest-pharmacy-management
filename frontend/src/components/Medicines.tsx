@@ -210,7 +210,7 @@ export const Medicines: React.FC = () => {
   ];
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', flex: 1, minHeight: 0 }}>
       {/* Search and Filters Bar */}
       <div className="glass-card" style={{ padding: '20px' }}>
         <form onSubmit={handleSearchSubmit} style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'flex-end' }}>
@@ -312,7 +312,7 @@ export const Medicines: React.FC = () => {
       </div>
 
       {/* Main Table */}
-      <div className="glass-card" style={{ padding: '0px', overflow: 'hidden' }}>
+      <div className="glass-card" style={{ padding: '0px', overflow: 'hidden', flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
         {loading ? (
           <div
             style={{
@@ -359,7 +359,7 @@ export const Medicines: React.FC = () => {
             )}
           </div>
         ) : (
-          <div className="table-container" style={{ border: 'none' }}>
+          <div className="table-container" style={{ border: 'none', flex: 1, overflowY: 'auto' }}>
             <table>
               <thead>
                 <tr>

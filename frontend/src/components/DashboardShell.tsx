@@ -7,7 +7,9 @@ import {
   LayoutDashboard,
   LogOut,
   User,
-  Activity
+  Activity,
+  Menu,
+  X
 } from 'lucide-react';
 import { Suppliers } from './Suppliers';
 import { Medicines } from './Medicines';
@@ -16,6 +18,7 @@ import { Medicines } from './Medicines';
 export const DashboardShell = () => {
   const { user, logout } = useAuth();
   const [activeTab, setActiveTab] = useState<'dashboard' | 'suppliers' | 'medicines' | 'sales'>('dashboard');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -24,24 +27,73 @@ export const DashboardShell = () => {
     { id: 'sales', label: 'Sales & POS', icon: ShoppingCart },
   ] as const;
 
+  const handleTabChange = (tabId: 'dashboard' | 'suppliers' | 'medicines' | 'sales') => {
+    setActiveTab(tabId);
+    setIsSidebarOpen(false);
+  };
+
   return (
     <div className="dashboard-container">
+      {/* Mobile Top Header */}
+      <div className="mobile-header">
+        <button
+          onClick={() => setIsSidebarOpen(true)}
+          style={{
+            background: 'none',
+            border: 'none',
+            color: 'var(--text-primary)',
+            cursor: 'pointer',
+            padding: '4px',
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Menu size={24} />
+        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Activity size={24} style={{ color: 'var(--primary)' }} />
+          <span style={{ fontSize: '1.1rem', fontWeight: 700 }}>RxPharmacy</span>
+        </div>
+        <div style={{ width: '24px' }}></div> {/* Spacer to center the logo */}
+      </div>
+
+      {/* Sidebar overlay backdrop for mobile */}
+      {isSidebarOpen && (
+        <div className="sidebar-overlay" onClick={() => setIsSidebarOpen(false)}></div>
+      )}
+
       {/* Sidebar */}
-      <aside className="sidebar">
+      <aside className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
         {/* Brand */}
         <div style={{
           display: 'flex',
+          justifyContent: 'space-between',
           alignItems: 'center',
-          gap: '12px',
           paddingBottom: '24px',
           borderBottom: '1px solid var(--border-color)',
-          marginBottom: '24px'
+          marginBottom: '24px',
+          width: '100%'
         }}>
-          <Activity size={28} style={{ color: 'var(--primary)' }} />
-          <span style={{ fontSize: '1.25rem', fontWeight: 700, letterSpacing: '-0.02em' }}>
-            RxPharmacy
-          </span>
-
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Activity size={28} style={{ color: 'var(--primary)' }} />
+            <span style={{ fontSize: '1.25rem', fontWeight: 700, letterSpacing: '-0.02em' }}>
+              RxPharmacy
+            </span>
+          </div>
+          <button
+            className="mobile-close-btn"
+            onClick={() => setIsSidebarOpen(false)}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: 'var(--text-secondary)',
+              cursor: 'pointer',
+              display: 'none',
+            }}
+          >
+            <X size={20} />
+          </button>
         </div>
 
         {/* Navigation Items */}
@@ -52,7 +104,7 @@ export const DashboardShell = () => {
             return (
               <button
                 key={item.id}
-                onClick={() => setActiveTab(item.id)}
+                onClick={() => handleTabChange(item.id)}
                 className="btn"
                 style={{
                   justifyContent: 'flex-start',
@@ -132,7 +184,8 @@ export const DashboardShell = () => {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: '32px'
+          marginBottom: '32px',
+          flexShrink: 0
         }}>
           <div>
             <h1 style={{ textTransform: 'capitalize' }}>{activeTab}</h1>
@@ -143,27 +196,29 @@ export const DashboardShell = () => {
         </header>
 
         {/* Render actual component or dynamic view placeholders */}
-        {activeTab === 'suppliers' ? (
-          <Suppliers />
-        ) : activeTab === 'medicines' ? (
-          <Medicines />
-        ) : (
-          <div className="glass-card" style={{ minHeight: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '16px' }}>
-            <div style={{
-              padding: '24px',
-              borderRadius: '50%',
-              backgroundColor: 'var(--primary-light)',
-              color: 'var(--primary)'
-            }}>
-              {activeTab === 'dashboard' && <LayoutDashboard size={48} />}
-              {activeTab === 'sales' && <ShoppingCart size={48} />}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+          {activeTab === 'suppliers' ? (
+            <Suppliers />
+          ) : activeTab === 'medicines' ? (
+            <Medicines />
+          ) : (
+            <div className="glass-card" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '16px' }}>
+              <div style={{
+                padding: '24px',
+                borderRadius: '50%',
+                backgroundColor: 'var(--primary-light)',
+                color: 'var(--primary)'
+              }}>
+                {activeTab === 'dashboard' && <LayoutDashboard size={48} />}
+                {activeTab === 'sales' && <ShoppingCart size={48} />}
+              </div>
+              <h2>{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Module</h2>
+              <p style={{ color: 'var(--text-secondary)', maxWidth: '400px', textAlign: 'center' }}>
+                The {activeTab} view will populate here. Currently, you are successfully authenticated as <strong>{user?.email}</strong>.
+              </p>
             </div>
-            <h2>{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Module</h2>
-            <p style={{ color: 'var(--text-secondary)', maxWidth: '400px', textAlign: 'center' }}>
-              The {activeTab} view will populate here. Currently, you are successfully authenticated as <strong>{user?.email}</strong>.
-            </p>
-          </div>
-        )}
+          )}
+        </div>
 
       </main>
     </div>

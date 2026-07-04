@@ -118,7 +118,7 @@ export const Suppliers: React.FC = () => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', flex: 1, minHeight: 0 }}>
       {/* Top Bar */}
       <div
         style={{
@@ -174,7 +174,7 @@ export const Suppliers: React.FC = () => {
       </div>
 
       {/* Main content table */}
-      <div className="glass-card" style={{ padding: '0px', overflow: 'hidden' }}>
+      <div className="glass-card" style={{ padding: '0px', overflow: 'hidden', flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
         {loading ? (
           <div
             style={{
@@ -221,7 +221,7 @@ export const Suppliers: React.FC = () => {
             )}
           </div>
         ) : (
-          <div className="table-container" style={{ border: 'none' }}>
+          <div className="table-container" style={{ border: 'none', flex: 1, overflowY: 'auto' }}>
             <table>
               <thead>
                 <tr>
